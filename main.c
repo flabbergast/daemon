@@ -25,7 +25,6 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <linux/ioctl.h>
-#include <sys/fcntl.h> 
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 
@@ -290,9 +289,9 @@ int main(int argc, char** argv)
   ioctl(fb0, MIYOO_FB0_GET_VER, &ret);
   version = ret;
   ioctl(kbd, MIYOO_KBD_SET_VER, ret);
-  vir = open("/dev/miyoo_vir", O_RDWR);
-  ioctl(vir, MIYOO_VIR_SET_VER, ret);
-  close(vir);
+  //vir = open("/dev/miyoo_vir", O_RDWR);
+  //ioctl(vir, MIYOO_VIR_SET_VER, ret);
+  //close(vir);
   lastret = 0;
   unsigned int counter = 0;
   unsigned int actioned = 0;
@@ -504,7 +503,6 @@ int main(int argc, char** argv)
           break;
       case 20:
         {
-          int status;
           pid_t son = fork();
           if (!son) {
             execlp("sh", "sh", "-c", "kill $(ps -al | grep \"/mnt/\" | grep -v \"/kernel/\" | tr -s [:blank:] | cut -d \" \" -f 2) ; sleep 0.1 ; sync && poweroff",  NULL);
@@ -514,7 +512,6 @@ int main(int argc, char** argv)
       case 21:
         {
           //printf("kill\n"); 
-          int status;
           pid_t son = fork();
           if (!son) {
             //execlp("sh", "sh", "/mnt/kernel/killgui.sh", NULL);
